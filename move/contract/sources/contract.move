@@ -5,9 +5,6 @@ use std::vector;
 use sui::display;
 use sui::package;   
 use sui::event;
-use sui::transfer;
-use sui::tx_context::{Self, TxContext};
-use sui::object::{Self, UID};
 use sui::dynamic_field;
 use sui::hex;
 
@@ -67,12 +64,12 @@ fun init(otw: CONTRACT, ctx: &mut TxContext) {
     );
     display.add(
         string::utf8(b"external_url"),
-        string::utf8(b"https://wallink.app/profile/{id}"),
+        string::utf8(b"https://wallink.trwal.app/profile/{id}"),
     );
     // Flatland tarzı link ekleme - mevcut yapıya entegre
     display.add(
         b"link".to_string(),
-        b"https://wallink.app/0x{hexaddr}".to_string(),
+        b"https://wallink.trwal.app/0x{hexaddr}".to_string(),
     );
     // Dynamic links için bir alan - JSON formatında
     display.add(
@@ -198,4 +195,21 @@ public fun get_dynamic_links(person: &Person): &DynamicLinks {
 
 public fun get_dynamic_meta(person: &Person): &DynamicMeta {
     dynamic_field::borrow<ProfileMetaKey, DynamicMeta>(&person.id, ProfileMetaKey {})
+}
+
+// Test fonksiyonları için getter'lar
+public fun get_person_name(person: &Person): &String {
+    &person.name
+}
+
+public fun get_person_age(person: &Person): u8 {
+    person.age
+}
+
+public fun get_person_hexaddr(person: &Person): &String {
+    &person.hexaddr
+}
+
+public fun get_person_image_url(person: &Person): &String {
+    &person.image_url
 }
